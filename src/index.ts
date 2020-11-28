@@ -7,13 +7,18 @@ import UserInfoFactory from './userinfo/factory';
 
 export type OAuthProvider = 'google' | 'naver' | 'kakao' | 'github';
 
-export type OAuthTokenResponse = {
+type OAuthTokenResponse = {
   tokenType: string;
   accessToken: string;
   expiresIn?: number;
   refreshToken?: string;
   refreshTokenExpiresIn?: number;
   scope?: string;
+};
+
+type OAuthAuthorizationResponse = {
+  token: OAuthTokenResponse;
+  profile: SocialUserInfo;
 };
 
 export default class OAuthClient {
@@ -26,7 +31,7 @@ export default class OAuthClient {
     this.config = OAuthConfig[provider];
   }
 
-  public redirectToAuthorizaionPage(ctx: Context, state: string): void {
+  public authenticate(ctx: Context, state: string): void {
     const { authorizationUri, clientId, callbackUri, scope } = this.config;
     const params = new URLSearchParams();
     params.set('client_id', clientId);
@@ -40,7 +45,16 @@ export default class OAuthClient {
     ctx.redirect(`${authorizationUri}?${params.toString()}`);
   }
 
-  public async getAccessToken(
+  public async authorize(
+    code: string,
+    state: string,
+  ): Promise<OAuthAuthorizationResponse> {
+    const tokenResponse = await this.getAccessToken(code, state);
+    const userInfo = await this.getUserInfo(tokenResponse.accessToken);
+    return { token: tokenResponse, profile: userInfo };
+  }
+
+  private async getAccessToken(
     code: string,
     state: string,
   ): Promise<OAuthTokenResponse> {
@@ -74,7 +88,7 @@ export default class OAuthClient {
     return tokenResponse;
   }
 
-  public async getUserInfo(accessToken: string): Promise<SocialUserInfo> {
+  private async getUserInfo(accessToken: string): Promise<SocialUserInfo> {
     const { userInfoUri } = this.config;
     const { data } = await axios.get(userInfoUri, {
       headers: {
