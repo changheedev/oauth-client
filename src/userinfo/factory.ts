@@ -3,8 +3,12 @@ import NaverUserInfo from './naver';
 import KakaoUserInfo from './kakao';
 import GitHubUserInfo from './github';
 import SocialUserInfo from './default';
+import { OAuthProvider } from '../index';
 
-const parseUserInfo = (provider: string, userInfo: any): SocialUserInfo => {
+const parseUserInfo = (
+  provider: OAuthProvider,
+  userInfo: any,
+): SocialUserInfo => {
   if (provider === 'google') {
     return new GoogleUserInfo(userInfo);
   }
