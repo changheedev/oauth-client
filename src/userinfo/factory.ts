@@ -1,6 +1,7 @@
 import GoogleUserInfo from './google';
 import NaverUserInfo from './naver';
 import KakaoUserInfo from './kakao';
+import GitHubUserInfo from './github';
 import SocialUserInfo from './default';
 
 const parseUserInfo = (provider: string, userInfo: any): SocialUserInfo => {
@@ -10,7 +11,10 @@ const parseUserInfo = (provider: string, userInfo: any): SocialUserInfo => {
   if (provider === 'naver') {
     return new NaverUserInfo(userInfo);
   }
-  return new KakaoUserInfo(userInfo);
+  if (provider === 'kakao') {
+    return new KakaoUserInfo(userInfo);
+  }
+  return new GitHubUserInfo(userInfo);
 };
 
 export default { parseUserInfo };
