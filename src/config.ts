@@ -47,6 +47,22 @@ const OAuthConfig = {
     userInfoUri:
       process.env.KAKAO_USERINFO_URI || 'https://kapi.kakao.com/v2/user/me',
   },
+  github: {
+    clientId: process.env.GITHUB_CLIENT_ID || 'clientID',
+    clientSecret: process.env.GITHUB_CLIENT_SECRET || 'clientSecret',
+    scope: process.env.GITHUB_OAUTH_SCOPE || 'read:user',
+    authorizationUri:
+      process.env.GITHUB_AUTHORIZATION_URI ||
+      'https://github.com/login/oauth/authorize',
+    callbackUri:
+      process.env.GITHUB_CALLBACK_URI ||
+      'http://localhost:4000/api/auth/callback/github',
+    tokenUri:
+      process.env.GITHUB_TOKEN_URI ||
+      'https://github.com/login/oauth/access_token',
+    userInfoUri:
+      process.env.GITHUB_USERINFO_URI || 'https://api.github.com/user',
+  },
 };
 
 export default OAuthConfig;
