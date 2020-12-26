@@ -1,6 +1,6 @@
 {
-  "name": "oauth2-client",
-  "version": "1.0.0-alpha",
+  "name": "@changheedev/oauth2-client",
+  "version": "1.0.0",
   "description": "OAuth2 client for javascript",
   "main": "dist/index.js",
   "scripts": {
@@ -15,6 +15,17 @@
     "github"
   ],
   "author": "changheedev",
+  "homepage": "https://github.com/changheedev/oauth2-client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/changheedev/oauth2-client.git"
+  },
+  "bugs": {
+    "url": "https://github.com/changheedev/oauth2-client/issues"
+  },
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^26.0.19",
