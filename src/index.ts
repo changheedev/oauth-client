@@ -29,17 +29,16 @@ export default class OAuthClient {
     this.config = OAuthConfig[provider];
   }
 
-  public getAuthorizationUri(state?: string): string {
+  public getAuthorizationUri(state: string): string {
     const { authorizationUri, clientId, callbackUri, scope } = this.config;
     const params = new URLSearchParams({
       client_id: clientId,
       response_type: 'code',
       redirect_uri: callbackUri,
       scope: scope,
+      state,
     });
-    if (state) {
-      params.set('state', state);
-    }
+
     if (this.provider === 'google') {
       params.set('access_type', 'offline');
     }
@@ -57,19 +56,18 @@ export default class OAuthClient {
 
   private async getAccessToken(
     code: string,
-    state?: string,
+    state: string,
   ): Promise<OAuthTokenResponse> {
     const { tokenUri, callbackUri, clientId, clientSecret } = this.config;
     const queryParams = new URLSearchParams({
       grant_type: 'authorization_code',
-      code,
       redirect_uri: callbackUri,
       client_id: clientId,
       client_secret: clientSecret,
+      code,
+      state,
     });
-    if (state) {
-      queryParams.set('state', state);
-    }
+
     const header = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
