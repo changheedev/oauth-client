@@ -1,4 +1,4 @@
-import OAuthClient from '.';
+import OAuth2Client from './oauth2-client';
 import UserInfoFactory from './userinfo/factory';
 
 const mockAuthorizationCode = 'mock_authorization_code';
@@ -6,7 +6,7 @@ const mockState = 'mock_state';
 
 test('Google authorizationUri 테스트', () => {
   //given
-  const client = new OAuthClient('google');
+  const client = new OAuth2Client('google');
 
   //when
   const authorizationUri = client.getAuthorizationUri(mockState);
@@ -26,7 +26,7 @@ test('Google authorizationUri 테스트', () => {
 
 test('Naver authorizationUri 테스트', () => {
   //given
-  const client = new OAuthClient('naver');
+  const client = new OAuth2Client('naver');
 
   //when
   const authorizationUri = client.getAuthorizationUri(mockState);
@@ -45,7 +45,7 @@ test('Naver authorizationUri 테스트', () => {
 
 test('Kakao authorizationUri 테스트', () => {
   //given
-  const client = new OAuthClient('kakao');
+  const client = new OAuth2Client('kakao');
 
   //when
   const authorizationUri = client.getAuthorizationUri(mockState);
@@ -64,7 +64,7 @@ test('Kakao authorizationUri 테스트', () => {
 
 test('GitHub authorizationUri 테스트', () => {
   //given
-  const client = new OAuthClient('github');
+  const client = new OAuth2Client('github');
 
   //when
   const authorizationUri = client.getAuthorizationUri(mockState);
@@ -109,12 +109,12 @@ test('Google authorization 응답값 테스트', async () => {
   };
 
   const mockGetAccessTokenFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getAccessToken',
   );
 
   const mockGetUserInfoFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getUserInfo',
   );
 
@@ -129,7 +129,7 @@ test('Google authorization 응답값 테스트', async () => {
   );
 
   //when
-  const client = new OAuthClient(provider);
+  const client = new OAuth2Client(provider);
   const { token, profile } = await client.authorize(
     mockAuthorizationCode,
     mockState,
@@ -175,11 +175,11 @@ test('Naver authorization 응답값 테스트', async () => {
   };
 
   const mockGetAccessTokenFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getAccessToken',
   );
   const mockGetUserInfoFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getUserInfo',
   );
 
@@ -194,7 +194,7 @@ test('Naver authorization 응답값 테스트', async () => {
   );
 
   //when
-  const client = new OAuthClient(provider);
+  const client = new OAuth2Client(provider);
   const { token, profile } = await client.authorize(
     mockAuthorizationCode,
     mockState,
@@ -251,11 +251,11 @@ test('Kakao authorization 응답값 테스트', async () => {
   };
 
   const mockGetAccessTokenFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getAccessToken',
   );
   const mockGetUserInfoFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getUserInfo',
   );
 
@@ -270,7 +270,7 @@ test('Kakao authorization 응답값 테스트', async () => {
   );
 
   //when
-  const client = new OAuthClient(provider);
+  const client = new OAuth2Client(provider);
   const { token, profile } = await client.authorize(
     mockAuthorizationCode,
     mockState,
@@ -348,11 +348,11 @@ test('GitHub authorization 응답값 테스트', async () => {
   };
 
   const mockGetAccessTokenFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getAccessToken',
   );
   const mockGetUserInfoFunc = jest.spyOn(
-    OAuthClient.prototype as any,
+    OAuth2Client.prototype as any,
     'getUserInfo',
   );
 
@@ -367,7 +367,7 @@ test('GitHub authorization 응답값 테스트', async () => {
   );
 
   //when
-  const client = new OAuthClient(provider);
+  const client = new OAuth2Client(provider);
   const { token, profile } = await client.authorize(
     mockAuthorizationCode,
     mockState,

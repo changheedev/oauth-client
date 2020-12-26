@@ -3,7 +3,7 @@ import NaverUserInfo from './naver';
 import KakaoUserInfo from './kakao';
 import GitHubUserInfo from './github';
 import SocialUserInfo from './default';
-import { OAuthProvider } from '../index';
+import { OAuthProvider } from '../types';
 
 const parseUserInfo = (
   provider: OAuthProvider,
