@@ -1,7 +1,5 @@
 import OAuthConfig from './config';
-import { Context } from 'koa';
 import axios from 'axios';
-import * as qs from 'querystring';
 import SocialUserInfo from './userinfo/default';
 import UserInfoFactory from './userinfo/factory';
 
@@ -31,21 +29,24 @@ export default class OAuthClient {
     this.config = OAuthConfig[provider];
   }
 
-  public authenticate(ctx: Context, state: string): void {
+  public getAuthorizationUri(state?: string): string {
     const { authorizationUri, clientId, callbackUri, scope } = this.config;
-    const params = new URLSearchParams();
-    params.set('client_id', clientId);
-    params.set('response_type', 'code');
-    params.set('redirect_uri', callbackUri);
-    params.set('state', state);
-    params.set('scope', scope);
+    const params = new URLSearchParams({
+      client_id: clientId,
+      response_type: 'code',
+      redirect_uri: callbackUri,
+      scope: scope
+    });
+    if(state){
+      params.set('state', state);
+    }
     if (this.provider === 'google') {
       params.set('access_type', 'offline');
     }
-    ctx.redirect(`${authorizationUri}?${params.toString()}`);
+    return`${authorizationUri}?${params.toString()}`;
   }
 
-  public async authorize(
+  public async getAccessTokenAndProfile(
     code: string,
     state: string,
   ): Promise<OAuthAuthorizationResponse> {
@@ -56,18 +57,19 @@ export default class OAuthClient {
 
   private async getAccessToken(
     code: string,
-    state: string,
+    state?: string,
   ): Promise<OAuthTokenResponse> {
     const { tokenUri, callbackUri, clientId, clientSecret } = this.config;
-    const queryParams = {
+    const queryParams = new URLSearchParams({
       grant_type: 'authorization_code',
       code,
-      state,
       redirect_uri: callbackUri,
       client_id: clientId,
       client_secret: clientSecret,
-    };
-    const query = qs.stringify(queryParams);
+    });
+    if(state){
+      queryParams.set('state', state);
+    }
     const header = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -76,7 +78,7 @@ export default class OAuthClient {
       },
     };
 
-    const { data } = await axios.post(tokenUri, query, header);
+    const { data } = await axios.post(tokenUri, queryParams.toString(), header);
     const tokenResponse = {
       tokenType: data.token_type,
       accessToken: data.access_token,
