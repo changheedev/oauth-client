@@ -35,18 +35,18 @@ export default class OAuthClient {
       client_id: clientId,
       response_type: 'code',
       redirect_uri: callbackUri,
-      scope: scope
+      scope: scope,
     });
-    if(state){
+    if (state) {
       params.set('state', state);
     }
     if (this.provider === 'google') {
       params.set('access_type', 'offline');
     }
-    return`${authorizationUri}?${params.toString()}`;
+    return `${authorizationUri}?${params.toString()}`;
   }
 
-  public async getAccessTokenAndProfile(
+  public async authorize(
     code: string,
     state: string,
   ): Promise<OAuthAuthorizationResponse> {
@@ -67,7 +67,7 @@ export default class OAuthClient {
       client_id: clientId,
       client_secret: clientSecret,
     });
-    if(state){
+    if (state) {
       queryParams.set('state', state);
     }
     const header = {
