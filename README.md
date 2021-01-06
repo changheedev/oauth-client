@@ -6,7 +6,7 @@ OAuth2 Client is a library for the OAuth 2.0 authorization.
 
 - Google
 - GitHub
-- Naver
+- NAVER
 - Kakao
 
 ## Usage
